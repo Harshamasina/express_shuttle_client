@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import landing_video from '../assets/landing_video.mp4';
 import landing_video_2 from '../assets/landing_video_2.mp4';
+import WhyChooseUs from '../Components/WhyChooseUs';
 
 const Home = () => {
     return (
@@ -19,6 +19,11 @@ const Home = () => {
                     <source src={landing_video_2} type='video/mp4' />
                 </video>
             </section>
+
+            <div className='home_info'>
+                <h2>Locally Owned and Operated</h2>
+            </div>
+            <WhyChooseUs />
         </div>
     )
 };
