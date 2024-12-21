@@ -1,5 +1,6 @@
 import bus_5 from '../../assets/bus_5.jpg';
 import { Parallax } from 'react-parallax';
+import TicketBookingForm from './TicketBookingForm';
 
 const TicketBooking = () => {
     return (
@@ -13,6 +14,8 @@ const TicketBooking = () => {
                     </div>
                 </div>
             </Parallax>
+
+            <TicketBookingForm />
         </div>
     )
 };

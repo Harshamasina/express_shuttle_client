@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import landing_video_2 from '../assets/landing_video_2.mp4';
 import WhyChooseUs from '../Components/WhyChooseUs';
+import HomeRibbon from '../Components/HomeRibbon';
 
 const Home = () => {
     return (
@@ -24,6 +25,7 @@ const Home = () => {
                 <h2>Locally Owned and Operated</h2>
             </div>
             <WhyChooseUs />
+            <HomeRibbon />
         </div>
     )
 };
