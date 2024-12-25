@@ -15,8 +15,8 @@ const Home = () => {
             <section className='main'>
                 <div className='overlay'></div>
                 <div className='info'>
-                    <h1>Welcome to Express Shuttle Services</h1>
-                    <p>Shuttle Services from Rolla to St Louis Airport and Casinos</p>
+                    <h1>Welcome to Express Taxi and Shuttle Services</h1>
+                    <p>Shuttle Services from Rolla to St Louis Airport and Columbia Casinos</p>
                     {currentUser && (
                         <p style={{color: "white"}}>Welcome back {accountDetails?.name}!</p>
                     )}

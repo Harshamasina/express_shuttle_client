@@ -1080,15 +1080,17 @@ form{
 .about_info_container{
     display: flex;
     width: 80%;
+    gap: 30px;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    padding-top: 100px;
+    padding-top: 50px;
+    padding-bottom: 30px;
     flex-direction: row;
 }
 
 .about_info_img img{
-    width: 850px;
+    width: 800px;
     height: 450px;
     vertical-align: top;
 }

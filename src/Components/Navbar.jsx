@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useEffect } from 'react';
-import { Routes, Route, Link, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from '../Pages/Home';
 import About from "../Pages/About";
 import Schedule from "../Pages/Schedule";

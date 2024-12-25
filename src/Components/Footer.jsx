@@ -25,7 +25,7 @@ const Footer = () => {
                                 <div className="single-cta">
                                     <div className="cta-text">
                                         <h4>Call us Today</h4>
-                                        <span>1-800-209-2709</span>
+                                        <span>1-573-458-6555</span>
                                     </div>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@ const Footer = () => {
                                 <div className="single-cta">
                                     <div className="cta-text">
                                         <h4>Mail us</h4>
-                                        <span>expressplumbing1971@yahoo.com</span>
+                                        <span>expressshuttle71@gmail.com</span>
                                     </div>
                                 </div>
                             </div>

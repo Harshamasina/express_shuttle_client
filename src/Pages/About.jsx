@@ -1,6 +1,6 @@
 import bus_3 from '../assets/bus_3.jpg';
 import { Parallax } from 'react-parallax';
-import shuttle_abstract from '../assets/shuttle_abstract.png';
+import express_shuttle_logo from "../assets/express_shuttle_logo.jpeg";
 
 const About = () => {
     return (
@@ -20,7 +20,7 @@ const About = () => {
             <section className='about_section'>
                 <div className='about_info_container'>
                     <div className='about_info_img'>
-                        <img src={shuttle_abstract} alt='shuttle bus' />
+                        <img src={express_shuttle_logo} alt='shuttle bus' />
                     </div>
 
                     <div className='about_info'>
