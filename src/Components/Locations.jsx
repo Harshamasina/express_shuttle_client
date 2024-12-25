@@ -12,7 +12,6 @@ const Locations = () => {
         const fetchData  = async () => {
             try {
                 const res = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_locations`);
-
                 const stl = res.data.filter(location => location.location_town === 'STL');
                 const rla = res.data.filter(location => location.location_town === 'RLA');
                 setSTLLocation(stl);
@@ -38,7 +37,6 @@ const Locations = () => {
                 ariaLabel="mutating-dots-loading"
                 wrapperStyle={{}}
                 wrapperClass="loader"
-
             />
         </div>
     };

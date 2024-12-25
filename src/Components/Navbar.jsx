@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { Routes, Route, Link, useLocation, Navigate } from "react-router-dom";
 import Home from '../Pages/Home';
 import About from "../Pages/About";
 import Schedule from "../Pages/Schedule";
@@ -10,9 +10,14 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import Error404 from '../Pages/Error404';
 import express_shuttle_nav from "../assets/express_shuttle_nav.png";
+import { AuthContext } from "../Context/AuthContext";
+import MyAccount from '../Pages/MyAccount';
+import ProtectedRoute from './ProtectedRoute';
 
 const Navbar = () => {
     const location = useLocation();
+    const { currentUser } = useContext(AuthContext);
+    console.log(currentUser);
 
     useEffect(() => {
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -59,9 +64,13 @@ const Navbar = () => {
                                 <li className="nav-item">
                                     <Link className="nav-link mx-lg-2" aria-current="why us" aria-label='Read more about why to estimate' to="/schedule">Schedule</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link mx-lg-2" aria-current="why us" aria-label='Read more about why to estimate' to="/ticket_booking">Ticket Booking</Link>
-                                </li>
+
+                                {currentUser && (
+                                    <li className="nav-item">
+                                        <Link className="nav-link mx-lg-2" aria-current="ticket booking" aria-label='Book tickets' to="/ticket_booking">Ticket Booking</Link>
+                                    </li>
+                                )}
+
                                 <li className="nav-item contact_link">
                                     <Link className="nav-link mx-lg-2" aria-current="contact us" aria-label='Read more about how to contact us' to="/contact">Contact Us</Link>
                                 </li>
@@ -69,7 +78,15 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    <Link to='/login' className='navbar_button'>Book a Shuttle</Link>
+                    {currentUser ? (
+                        <Link to="/my_account" className="navbar_button">
+                            My Account
+                        </Link>
+                    ) : (
+                        <Link to="/login" className="navbar_button">
+                            Login / Register
+                        </Link>
+                    )}
                     
                     <button className="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -83,7 +100,8 @@ const Navbar = () => {
                     <Route path='/home' element={<Home />} />
                     <Route path='/about_us' element={<About />} />
                     <Route path='/schedule' element={<Schedule />} />
-                    <Route path='/ticket_booking' element={<TicketBooking />} />
+                    <Route path="/ticket_booking" element={<ProtectedRoute><TicketBooking /></ProtectedRoute>} />
+                    <Route path="/my_account" element={<ProtectedRoute><MyAccount /></ProtectedRoute>} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/contact' element={<Contact />} />

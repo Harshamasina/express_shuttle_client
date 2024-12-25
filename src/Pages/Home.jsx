@@ -2,8 +2,14 @@ import { Link } from 'react-router-dom';
 import landing_video_2 from '../assets/landing_video_2.mp4';
 import WhyChooseUs from '../Components/WhyChooseUs';
 import HomeRibbon from '../Components/HomeRibbon';
+import { AuthContext } from '../Context/AuthContext';
+import { AccountDetailsContext } from '../Context/AccountContext';
+import { useContext } from 'react';
 
 const Home = () => {
+    const { currentUser } = useContext(AuthContext);
+    const { accountDetails } = useContext(AccountDetailsContext);
+
     return (
         <div>
             <section className='main'>
@@ -11,7 +17,11 @@ const Home = () => {
                 <div className='info'>
                     <h1>Welcome to Express Shuttle Services</h1>
                     <p>Shuttle Services from Rolla to St Louis Airport and Casinos</p>
-                    <Link to="/login">
+                    {currentUser && (
+                        <p style={{color: "white"}}>Welcome back {accountDetails?.name}!</p>
+                    )}
+
+                    <Link to={currentUser && currentUser ? "/ticket_booking" : "/login" }>
                         <button className='home_btn'>Click to Book a Shuttle</button>
                     </Link>
                 </div>

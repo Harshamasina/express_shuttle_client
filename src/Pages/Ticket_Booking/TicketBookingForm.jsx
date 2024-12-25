@@ -112,12 +112,10 @@ const TicketBookingForm = () => {
                             </div>
                         </div>
                     </div>
-                    
 
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="pick_up_date" className="form-label">Pick-Up Date</label><br />
                                 <input
                                     type="date"
                                     name="pick_up_date"
@@ -126,12 +124,12 @@ const TicketBookingForm = () => {
                                     onChange={handleChange}
                                     required
                                 />
+                                <label htmlFor="pick_up_date" className="form-label">Pick-Up Date</label>
                             </div>
                         </div>
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="pick_up_time" className="form-label">Pick-Up Time</label><br />
                                 <input
                                     type="time"
                                     name="pick_up_time"
@@ -140,6 +138,7 @@ const TicketBookingForm = () => {
                                     onChange={handleChange}
                                     required
                                 />
+                                <label htmlFor="pick_up_time" className="form-label">Pick-Up Time</label>
                             </div>
                         </div>
                     </div>
@@ -205,7 +204,7 @@ const TicketBookingForm = () => {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="airline" className="form-label">Airlines</label>
+                                <label htmlFor="airline" className="form-label">Airlines (optional)</label>
                                 <select
                                     name="airline"
                                     className="form-control"
