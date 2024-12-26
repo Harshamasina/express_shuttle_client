@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { auth } from "../Config/Firebase";
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 
 const Register = () => {
     const [userRegister, setUserRegister] = useState({
@@ -47,6 +47,11 @@ const Register = () => {
     
             const userCredential = await createUserWithEmailAndPassword(auth, userRegister.email, userRegister.password);
             const user = userCredential.user;
+
+            await updateProfile(user, {
+                displayName: userRegister.name,
+                phoneNumber: userRegister.phone
+            });
     
             await sendEmailVerification(user);
     
