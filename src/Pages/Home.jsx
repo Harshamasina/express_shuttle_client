@@ -3,12 +3,10 @@ import landing_video_2 from '../assets/landing_video_2.mp4';
 import WhyChooseUs from '../Components/WhyChooseUs';
 import HomeRibbon from '../Components/HomeRibbon';
 import { AuthContext } from '../Context/AuthContext';
-import { AccountDetailsContext } from '../Context/AccountContext';
 import { useContext } from 'react';
 
 const Home = () => {
     const { currentUser } = useContext(AuthContext);
-    const { accountDetails } = useContext(AccountDetailsContext);
 
     return (
         <div>
@@ -18,7 +16,7 @@ const Home = () => {
                     <h1>Welcome to Express Taxi and Shuttle Services</h1>
                     <p>Shuttle Services from Rolla to St Louis Airport and Columbia Casinos</p>
                     {currentUser && (
-                        <p style={{color: "white"}}>Welcome back {accountDetails?.name}!</p>
+                        <p style={{color: "white"}}>Welcome back {currentUser?.displayName}!</p>
                     )}
 
                     <Link to={currentUser && currentUser ? "/ticket_booking" : "/login" }>

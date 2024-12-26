@@ -25,8 +25,14 @@ const AccountDetailsProvider = ({ children }) => {
                 const res = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_fb_id/${userId}`);
                 setAccountDetails(res.data);
             } catch (err) {
-                console.error("Error fetching account details:", err);
-                setError(err.response?.data?.message || err.message || "Something went wrong.");
+                if (err.response?.status === 422) {
+                    // Handle 422 specifically (e.g., new user with no account details yet)
+                    console.warn("No account details found for user:", currentUser.uid);
+                    setAccountDetails(null);
+                } else {
+                    console.error("Error fetching account details:", err);
+                    setError(err.response?.data?.message || err.message || "Something went wrong.");
+                }
             } finally {
                 setLoading(false);
             }
@@ -55,15 +61,13 @@ const AccountDetailsProvider = ({ children }) => {
         );
     }
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
     return (
         <AccountDetailsContext.Provider value={{ accountDetails, loading, error }}>
             {children}
         </AccountDetailsContext.Provider>
     );
 };
+
+export const useAccountDetails = () => useContext(AccountDetailsContext);
 
 export { AccountDetailsContext, AccountDetailsProvider };

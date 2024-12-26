@@ -91,7 +91,7 @@ const Contact = () => {
 
                             <div className="input_box">
                                 <select type='text' name='service' value={userMessage.service} onChange={handleInputs} required>
-                                    <option disabled selected value="">Service you want to contact</option>
+                                    <option disabled value="">Service you want to contact</option>
                                     <option value="1">Need assistance in booking Shuttle</option>
                                     <option value="2">Refund for a booking</option>
                                     <option value="3">Need ride other than the booking time</option>
