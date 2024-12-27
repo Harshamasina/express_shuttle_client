@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TicketBookingForm = () => {
-    const [locations, setLocations] = useState({ rla: [], stl: [], clb: [] });
     const [formData, setFormData] = useState({
         trip_type: "oneway",
         from_location: "",
@@ -17,23 +17,46 @@ const TicketBookingForm = () => {
         return_drop_off: "",
         airline: "",
         traveler_count: "",
-        notes: ""
+        notes: "",
+        payment: ""
     });
+    const [rideOptions, setRideOptions] = useState({
+        pick_up: [],
+        pick_up_times: [],
+        drop_off: [],
+        return_pick_up: [],
+        return_pick_time: [],
+        return_drop_off: []
+    });
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchLocations = async () => {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_locations`);
-                const rollaLocations = response.data.filter(loc => loc.location_town === 'RLA');
-                const stlLocations = response.data.filter(loc => loc.location_town === 'STL');
-                const clbLocations = response.data.filter(loc => loc.location_town === 'CLB');
-                setLocations({ rla: rollaLocations, stl: stlLocations, clb: clbLocations });
-            } catch (error) {
-                console.error('Failed to fetch locations', error);
-            }
-        };
-        fetchLocations();
-    }, []);
+    const fetchRideSchedule = async (ride) => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_schedule/${ride}`);
+            const scheduleData = response.data;
+
+            setRideOptions({
+                pick_up: scheduleData.pick_up || [],
+                pick_up_times: scheduleData.pick_up_times || [],
+                drop_off: scheduleData.drop_off || [],
+                return_pick_up: scheduleData.return_pick_up || [],
+                return_pick_time: scheduleData.return_pick_time || [],
+                return_drop_off: scheduleData.return_drop_off || []
+            });
+
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                from_location: scheduleData.from_location,
+                to_location: scheduleData.to_location
+            }));
+        } catch (error) {
+            console.error("Failed to fetch ride schedule", error);
+        }
+    };
+
+    const handleRideSelection = async (ride) => {
+        await fetchRideSchedule(ride);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -53,7 +76,7 @@ const TicketBookingForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
+        navigate("/checkout", { state: {formData} });
     };
 
     return (
@@ -89,31 +112,31 @@ const TicketBookingForm = () => {
                         </div>
                     </div>
 
-                    {/* <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="pick_up" className="form-label">Pick-Up City</label>
-                                <select name="pick_up" value={formData.from_location} className="form-control" onChange={handleChange} required>
-                                    <option disabled value="">Select Pick-Up Town</option>
-                                    <option value="STL">St Louis</option>
-                                    <option value="RLA">Rolla</option>
-                                    <option value="CLB">Colombia</option>
-                                </select>
-                            </div>
+                    <div className="form-group">
+                        <label style={{ fontSize: "20px", color: "#e5be5c", fontWeight: "600" }}>Ride Details</label>
+                        <div className="form-checkbox">
+                            {["RLA - STL", "STL - RLA", "RLA - CLB", "CLB - RLA"].map((ride) => (
+                                <label key={ride} className="form-label">
+                                    <input
+                                        type="radio"
+                                        name="to_location"
+                                        value={ride}
+                                        className="form-control"
+                                        checked={formData.to_location === ride}
+                                        onChange={(e) => {
+                                            setFormData({ ...formData, to_location: e.target.value });
+                                            handleRideSelection(e.target.value);
+                                        }}
+                                    />
+                                    <span></span>{ride}
+                                </label>
+                            ))}
                         </div>
-
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="drop_off" className="form-label">Drop-Off City</label>
-                                <select name="drop_off" value={formData.to_location} className="form-control" onChange={handleChange} required>
-                                    <option disabled value="">Select Drop-Off Town</option>
-                                    <option value="STL">St Louis</option>
-                                    <option value="RLA">Rolla</option>
-                                    <option value="CLB">Boonville</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div> */}
+                    </div>
+                    
+                    <div className="row form_p">
+                        <p>{formData.from_location} {formData.from_location ? "-" : ""} {formData.to_location}</p>
+                    </div>
 
                     <div className="row">
                         <div className="col-md-6">
@@ -121,8 +144,8 @@ const TicketBookingForm = () => {
                                 <label htmlFor="pick_up" className="form-label">Pick-Up Location</label>
                                 <select name="pick_up" value={formData.pick_up} className="form-control" onChange={handleChange} required>
                                     <option disabled value="">Select Pick-Up Location</option>
-                                    {locations && locations.rla.map(location => (
-                                        <option key={location._id} value={location.location_code}>{location.location_name}</option>
+                                    {rideOptions.pick_up.map((location) => (
+                                        <option key={location} value={location}>{location}</option>
                                     ))}
                                 </select>
                             </div>
@@ -133,8 +156,8 @@ const TicketBookingForm = () => {
                                 <label htmlFor="drop_off" className="form-label">Drop-Off Location</label>
                                 <select name="drop_off" value={formData.drop_off} className="form-control" onChange={handleChange} required>
                                     <option disabled value="">Select Drop-Off Location</option>
-                                    {locations && locations.stl.map(location => (
-                                        <option key={location._id} value={location.location_code}>{location.location_name}</option>
+                                    {rideOptions.drop_off.map((location) => (
+                                        <option key={location} value={location}>{location}</option>
                                     ))}
                                 </select>
                             </div>
@@ -158,15 +181,13 @@ const TicketBookingForm = () => {
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <input
-                                    type="time"
-                                    name="pick_up_time"
-                                    className="form-control"
-                                    value={formData.pick_up_time}
-                                    onChange={handleChange}
-                                    required
-                                />
                                 <label htmlFor="pick_up_time" className="form-label">Pick-Up Time</label>
+                                <select name="pick_up_time" value={formData.pick_up_time} className="form-control" onChange={handleChange} required>
+                                    <option disabled value="">Select Pick-Up Time</option>
+                                    {rideOptions.pick_up_times.map((time) => (
+                                        <option key={time} value={time}>{time}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -179,8 +200,8 @@ const TicketBookingForm = () => {
                                         <label htmlFor="return_pick_up" className="form-label">Return Pick-Up Location</label>
                                         <select name="return_pick_up" value={formData.return_pick_up} onChange={handleChange} className="form-control">
                                             <option disabled value="">Select Return Pick-Up</option>
-                                            {locations.stl.map(location => (
-                                                <option key={location._id} value={location.location_code}>{location.location_name}</option>
+                                            {rideOptions.return_pick_up.map((location) => (
+                                                <option key={location} value={location}>{location}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -204,13 +225,12 @@ const TicketBookingForm = () => {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label htmlFor="return_pick_up_time" className="form-label">Return Pick-Up Time</label>
-                                        <input
-                                            type="time"
-                                            name="return_pick_up_time"
-                                            value={formData.return_pick_up_time}
-                                            onChange={handleChange}
-                                            className="form-control"
-                                        />
+                                        <select name="return_pick_up_time" value={formData.return_pick_up_time} className="form-control" onChange={handleChange}>
+                                            <option disabled value="">Select Return Pick-Up Time</option>
+                                            {rideOptions.return_pick_time.map((time) => (
+                                                <option key={time} value={time}>{time}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
 
@@ -219,9 +239,7 @@ const TicketBookingForm = () => {
                                         <label htmlFor="return_drop_off" className="form-label">Return Drop-Off Location</label>
                                         <select name="return_drop_off" value={formData.return_drop_off} className="form-control" onChange={handleChange}>
                                             <option disabled value="">Select Return Drop-Off</option>
-                                            {locations.rla.map(location => (
-                                                <option key={location._id} value={location.location_code}>{location.location_name}</option>
-                                            ))}
+                                            
                                         </select>
                                     </div>
                                 </div>

@@ -13,6 +13,7 @@ import express_shuttle_nav from "../assets/express_shuttle_nav.png";
 import { AuthContext } from "../Context/AuthContext";
 import MyAccount from '../Pages/MyAccount';
 import ProtectedRoute from './ProtectedRoute';
+import BookingCheckout from '../Pages/Ticket_Booking/BookingCheckout';
 
 const Navbar = () => {
     const location = useLocation();
@@ -101,6 +102,7 @@ const Navbar = () => {
                     <Route path='/about_us' element={<About />} />
                     <Route path='/schedule' element={<Schedule />} />
                     <Route path="/ticket_booking" element={<ProtectedRoute><TicketBooking /></ProtectedRoute>} />
+                    <Route path='checkout' element={<ProtectedRoute><BookingCheckout /></ProtectedRoute>}/>
                     <Route path="/my_account" element={<ProtectedRoute><MyAccount /></ProtectedRoute>} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />

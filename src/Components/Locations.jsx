@@ -12,7 +12,7 @@ const Locations = () => {
     useEffect(() => {
         const fetchData  = async () => {
             try {
-                const res = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_locations`);
+                const res = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_all_locations`);
                 const stl = res.data.filter(location => location.location_town === 'STL');
                 const rla = res.data.filter(location => location.location_town === 'RLA');
                 const clb = res.data.filter(location => location.location_town === 'CLB');
@@ -61,7 +61,7 @@ const Locations = () => {
                 }
             </div>
 
-            <h3>Rolla Pick Up and Drop Off Locations</h3>
+            <h3>Rolla Pick Up and Drop Off Locations (Only Saturday's every week)</h3>
             <div className='locations_cards'>
                 {
                     RLALocation && RLALocation.map((data, index) => {
@@ -76,7 +76,7 @@ const Locations = () => {
                 }
             </div>
 
-            <h3>Colombia Pick Up and Drop Off Locations</h3>
+            <h3>Colombia Pick Up and Drop Off Locations (Only Friday's every week)</h3>
             <div className='locations_cards'>
                 {
                     CLBLocation && CLBLocation.map((data, index) => {

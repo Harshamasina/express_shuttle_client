@@ -683,11 +683,31 @@ ul {
 }
 
 .ParallaxDiv h2 {
-    font-size: 12vh;
+    font-size: 10vh;
     color: #e5be5c;
     font-weight: 600;
     position: relative;
     z-index: 2;
+}
+
+.ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.ParallaxPageContent ul{
+    list-style: none;
+    border-radius: 100px;
+    background: #e5be5c;
+    padding: 10px 20px;
+    width: 600px;
+}
+
+.ParallaxPageContent li{
+    font-size: 25px;
+    color: #1A1A19;
 }
 
 /* Contact US */
@@ -1358,11 +1378,11 @@ form{
 	position: absolute;
 	top: 5px;
 	left: 20px;
-	font-weight: 700;
+	font-weight: 600;
 	text-transform: uppercase;
 	line-height: 24px;
 	height: 24px;
-	font-size: 15px;
+	font-size: 18px;
 	color: #e5be5c;
 }
 
@@ -1412,14 +1432,36 @@ form{
 	transition: 0.2s all;
 }
 
-.booking-form .form-checkbox input:not(:checked)+span:after {
-	opacity: 0;
+.booking-form .form-checkbox input:checked + span {
+    background-color: #e5be5c;
+    border-color: #e5be5c;
+    color: #fff;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.booking-form .form-checkbox input:checked+span:after {
-	opacity: 1;
-	width: 10px;
-	height: 10px;
+/* Style the inner circle when checked */
+.booking-form .form-checkbox input:checked + span:after {
+    background-color: #fff;
+    width: 12px;
+    height: 12px;
+}
+
+.booking-form .form-checkbox .form-label {
+    color: #191a1e;
+    transition: color 0.3s ease;
+}
+
+/* Highlight the selected label */
+.booking-form .form-checkbox .form-label.selected {
+    color: yellow;
+    font-weight: bold;
+}
+
+.form_p{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+    color: #e5be5c;
 }
 
 .booking-form .submit-btn {
@@ -1541,6 +1583,125 @@ form{
 
 .account_container p{
     font-size: 20px;
+}
+
+.checkout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin: 0 auto;
+    margin-top: 8%;
+    margin-bottom: 2%;
+    max-width: 800px;
+}
+
+.checkout-container .card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.checkout-container .card h2 {
+    margin-top: 0;
+    color: #e5be5c;
+    font-size: 30px;
+}
+
+.checkout-container .card p {
+    margin: 10px 0;
+    font-size: 20px;
+    color: #1A1A19;
+}
+
+.checkout-container .card h3 {
+    margin-top: 20px;
+    color: #e5be5c;
+    font-size: 40px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.payment-container {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+}
+
+.payment-container h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+.error-message {
+    color: #d9534f;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    background: #e5be5c;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
+.back-btn:hover {
+    background: #d4a650;
+}
+
+.submit-btn {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.submit-btn:hover {
+    background: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .checkout-container {
+        padding: 10px;
+    }
+
+    .card,
+    .payment-container {
+        padding: 15px;
+    }
+
+    .card p,
+    .payment-container h2 {
+        font-size: 14px;
+    }
+
+    .back-btn,
+    .submit-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
 }
 
 @media screen and (max-width: 600px){
