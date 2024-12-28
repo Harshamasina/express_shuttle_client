@@ -311,6 +311,7 @@ const TicketBookingForm = () => {
                                     <option value="WN">Southwest</option>
                                     <option value="NK">Spirit</option>
                                     <option value="UA">United</option>
+                                    <option value="none">None</option>
                                 </select>
                             </div>
                         </div>

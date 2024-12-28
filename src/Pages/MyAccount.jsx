@@ -273,7 +273,7 @@ const MyAccount = () => {
                                                             <hr />
                                                             <div className='row'>
                                                                 <div className="col-sm-4">
-                                                                    <h6 className="mb-0">Return Pickup Date Time</h6>
+                                                                    <h6 className="mb-0">Return Pickup Date & Time</h6>
                                                                 </div>
                                                                 <div className="col-sm-8 text-secondary">
                                                                     <p>{ride.return_pick_up_date}, {ride.return_pick_up_time}</p>

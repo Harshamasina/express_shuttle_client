@@ -19,15 +19,18 @@ import BookingConfirmation from '../Pages/Ticket_Booking/BookingConfirmation';
 const Navbar = () => {
     const location = useLocation();
     const { currentUser } = useContext(AuthContext);
-    console.log(currentUser);
 
     useEffect(() => {
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasElement = document.getElementById('offcanvasNavbar');
         
         const closeOffcanvas = () => {
-            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-            offcanvas.hide();
+            if (offcanvasElement) {
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                if (offcanvas) {
+                    offcanvas.hide();
+                }
+            }
         };
         
         offcanvasLinks.forEach(link => {
@@ -77,19 +80,35 @@ const Navbar = () => {
                                     <Link className="nav-link mx-lg-2" aria-current="contact us" aria-label='Read more about how to contact us' to="/contact">Contact Us</Link>
                                 </li>
                             </ul>
+
+                            {/* Add My Account / Login links inside the sidebar for mobile */}
+                            <div className="d-lg-none mt-3">
+                                {currentUser ? (
+                                    <Link to="/my_account" className="navbar_button">
+                                        My Account
+                                    </Link>
+                                ) : (
+                                    <Link to="/login" className="navbar_button">
+                                        Login / Register
+                                    </Link>
+                                )}
+                            </div>
                         </div>
                     </div>
 
-                    {currentUser ? (
-                        <Link to="/my_account" className="navbar_button">
-                            My Account
-                        </Link>
-                    ) : (
-                        <Link to="/login" className="navbar_button">
-                            Login / Register
-                        </Link>
-                    )}
-                    
+                    {/* Add My Account / Login links in the navbar for desktop */}
+                    <div className="d-none d-lg-block">
+                        {currentUser ? (
+                            <Link to="/my_account" className="navbar_button">
+                                My Account
+                            </Link>
+                        ) : (
+                            <Link to="/login" className="navbar_button">
+                                Login / Register
+                            </Link>
+                        )}
+                    </div>
+
                     <button className="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>

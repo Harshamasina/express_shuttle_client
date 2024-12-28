@@ -80,9 +80,6 @@ const Footer = () => {
                                 <div className='footer_bbb_section'>
                                     <h3>Serving Rolla, MO</h3>
                                     <h5>Shuttle Services to St Louis Casinos and Airport from Rolla and surrounding areas</h5>
-                                    <a href='https://www.bbb.org/us/mo/waynesville/profile/plumber/express-24-hr-plumbing-and-electrical-0734-310611651' target='_blank' rel='noreferrer' aria-label='click image to go to bbb.org page'>
-                                        <img src="https://express24plumbing.s3.ap-south-1.amazonaws.com/img_22_1.webp" alt='bbb_logo' />
-                                    </a>
                                 </div>
                             </div>
                         </div>
