@@ -27,8 +27,12 @@ const MyAccount = () => {
     }, []);
 
     const today = moment();
-    const upcomingRides = account?.past_rides?.filter(ride => moment(ride.pickup_date).isAfter(today)) || [];
-    const pastRides = account?.past_rides?.filter(ride => moment(ride.pickup_date).isBefore(today)) || [];
+    const upcomingRides = account?.past_rides?.filter(ride => 
+        moment(ride.pick_up_date, "YYYY-MM-DD").isAfter(today)
+    ) || [];
+    const pastRides = account?.past_rides?.filter(ride => 
+        moment(ride.pick_up_date, "YYYY-MM-DD").isBefore(today)
+    ) || [];
 
     const userType = {
         S: "Student",
@@ -161,7 +165,7 @@ const MyAccount = () => {
                                                             <h6 className="mb-0">Payment Amount</h6>
                                                         </div>
                                                         <div className="col-sm-8 text-secondary">
-                                                            <p>${ride.payment}</p>
+                                                            <p>${ride.total_amount}</p>
                                                         </div>
                                                     </div>
                                                     <hr />
@@ -233,7 +237,7 @@ const MyAccount = () => {
                                                             <h6 className="mb-0">Pickup Date and Time</h6>
                                                         </div>
                                                         <div className="col-sm-8 text-secondary">
-                                                            <p>{ride.pickup_date}, {ride.pick_time}</p>
+                                                            <p>{ride.pick_up_date}, {ride.pick_up_time}</p>
                                                         </div>
                                                     </div>
                                                     <hr />
@@ -260,7 +264,7 @@ const MyAccount = () => {
                                                         <>
                                                            <div className='row'>
                                                                 <div className="col-sm-4">
-                                                                    <h6 className="mb-0">Return Pickup Date</h6>
+                                                                    <h6 className="mb-0">Return Pickup</h6>
                                                                 </div>
                                                                 <div className="col-sm-8 text-secondary">
                                                                     <p>{ride.return_pick_up}</p>
@@ -269,10 +273,10 @@ const MyAccount = () => {
                                                             <hr />
                                                             <div className='row'>
                                                                 <div className="col-sm-4">
-                                                                    <h6 className="mb-0">Return Pickup Time</h6>
+                                                                    <h6 className="mb-0">Return Pickup Date Time</h6>
                                                                 </div>
                                                                 <div className="col-sm-8 text-secondary">
-                                                                    <p>{ride.return_pick_up_time}</p>
+                                                                    <p>{ride.return_pick_up_date}, {ride.return_pick_up_time}</p>
                                                                 </div>
                                                             </div>
                                                             <hr />
@@ -310,7 +314,7 @@ const MyAccount = () => {
                                                             <h6 className="mb-0">Payment Amount</h6>
                                                         </div>
                                                         <div className="col-sm-8 text-secondary">
-                                                            <p>${ride.payment}</p>
+                                                            <p>${ride.total_amount}</p>
                                                         </div>
                                                     </div>
                                                     <hr />
@@ -382,7 +386,7 @@ const MyAccount = () => {
                                                             <h6 className="mb-0">Pickup Date and Time</h6>
                                                         </div>
                                                         <div className="col-sm-8 text-secondary">
-                                                            <p>{ride.pickup_date}, {ride.pick_time}</p>
+                                                            <p>{ride.pick_up_date}, {ride.pick_up_time}</p>
                                                         </div>
                                                     </div>
                                                     <hr />
@@ -409,7 +413,7 @@ const MyAccount = () => {
                                                         <>
                                                            <div className='row'>
                                                                 <div className="col-sm-4">
-                                                                    <h6 className="mb-0">Return Pickup Date</h6>
+                                                                    <h6 className="mb-0">Return Pickup</h6>
                                                                 </div>
                                                                 <div className="col-sm-8 text-secondary">
                                                                     <p>{ride.return_pick_up}</p>
@@ -418,10 +422,10 @@ const MyAccount = () => {
                                                             <hr />
                                                             <div className='row'>
                                                                 <div className="col-sm-4">
-                                                                    <h6 className="mb-0">Return Pickup Time</h6>
+                                                                    <h6 className="mb-0">Return Pickup Date Time</h6>
                                                                 </div>
                                                                 <div className="col-sm-8 text-secondary">
-                                                                    <p>{ride.return_pick_up_time}</p>
+                                                                    <p>{ride.return_pick_up_date}, {ride.return_pick_up_time}</p>
                                                                 </div>
                                                             </div>
                                                             <hr />

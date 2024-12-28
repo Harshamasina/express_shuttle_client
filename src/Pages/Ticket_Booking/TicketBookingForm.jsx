@@ -18,7 +18,8 @@ const TicketBookingForm = () => {
         airline: "",
         traveler_count: "",
         notes: "",
-        payment: ""
+        base_amount: "",
+        total_amount: ""
     });
     const [rideOptions, setRideOptions] = useState({
         pick_up: [],
@@ -41,7 +42,9 @@ const TicketBookingForm = () => {
                 drop_off: scheduleData.drop_off || [],
                 return_pick_up: scheduleData.return_pick_up || [],
                 return_pick_time: scheduleData.return_pick_time || [],
-                return_drop_off: scheduleData.return_drop_off || []
+                return_drop_off: scheduleData.return_drop_off || [],
+                ride_cost: scheduleData.ride_cost || 0,
+                return_cost: scheduleData.return_cost || 0
             });
 
             setFormData((prevFormData) => ({
@@ -54,12 +57,50 @@ const TicketBookingForm = () => {
         }
     };
 
+    useEffect(() => {
+        const calculatePayment = () => {
+            const { ride_cost = 0, return_cost = 0 } = rideOptions;
+            const travelers = parseInt(formData.traveler_count) || 0;
+    
+            if (travelers > 0) {
+                let totalPayment;
+
+                if(formData.trip_type === "oneway") {
+                    totalPayment = ride_cost * travelers;
+                }else if(formData.trip_type === "return") {
+                    totalPayment = return_cost * travelers;
+                } else {
+                    totalPayment = 0
+                }
+    
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    base_amount: totalPayment
+                }));
+            } else {
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    base_amount: 0
+                }));
+            }
+        };
+        calculatePayment();
+    }, [formData.traveler_count, formData.trip_type, rideOptions]);
+
     const handleRideSelection = async (ride) => {
         await fetchRideSchedule(ride);
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+    
+        if (name === "traveler_count") {
+            if (value <= 0) {
+                alert("Number of travelers must be greater than 0.");
+                setFormData({ ...formData, traveler_count: "" });
+                return;
+            }
+        }
         setFormData({ ...formData, [name]: value });
     };
 
@@ -113,7 +154,7 @@ const TicketBookingForm = () => {
                     </div>
 
                     <div className="form-group">
-                        <label style={{ fontSize: "20px", color: "#e5be5c", fontWeight: "600" }}>Ride Details</label>
+                        <label style={{ fontSize: "20px", color: "#e5be5c", fontWeight: "600" }}>Select Ride</label>
                         <div className="form-checkbox">
                             {["RLA - STL", "STL - RLA", "RLA - CLB", "CLB - RLA"].map((ride) => (
                                 <label key={ride} className="form-label">
@@ -133,7 +174,7 @@ const TicketBookingForm = () => {
                             ))}
                         </div>
                     </div>
-                    
+
                     <div className="row form_p">
                         <p>{formData.from_location} {formData.from_location ? "-" : ""} {formData.to_location}</p>
                     </div>
@@ -239,7 +280,9 @@ const TicketBookingForm = () => {
                                         <label htmlFor="return_drop_off" className="form-label">Return Drop-Off Location</label>
                                         <select name="return_drop_off" value={formData.return_drop_off} className="form-control" onChange={handleChange}>
                                             <option disabled value="">Select Return Drop-Off</option>
-                                            
+                                            {rideOptions.return_drop_off.map((location) => (
+                                                <option key={location} value={location}>{location}</option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
