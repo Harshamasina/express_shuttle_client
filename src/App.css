@@ -1017,13 +1017,18 @@ form{
 
 .google-btn {
     padding: 0.75rem;
-    /* margin-top: 1rem; */
     width: 30%;
     font-size: 20px;
     border: 2px solid #e5be5c;
     background: none;
     border-radius: 30px;
     cursor: pointer;
+    transition: .3s ease-in-out;
+}
+
+.google-btn:hover{
+    background: #e5be5c;
+    color: #f4f4f4;
 }
   
 /* Right Image Container */
@@ -1047,6 +1052,45 @@ form{
     padding: 10px;
     font-weight: 500;
     color: #1A1A19;
+}
+
+.show_password {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: left;
+    align-items: center;
+    color: #1A1A19;
+}
+
+.show_password input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    width: 5px !important;
+    height: 5px !important;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.show_password input[type="checkbox"]:checked {
+    background-color: #e5be5c;
+    border-color: #e5be5c;
+}
+
+.show_password input[type="checkbox"]:checked::after {
+    content: "✔";
+    font-size: 15px;
+    color: white;
+}
+
+.show_password label {
+    cursor: pointer;
+    font-size: 15px;
 }
   
 /* Responsive Design */

@@ -19,6 +19,7 @@ import BookingConfirmation from '../Pages/Ticket_Booking/BookingConfirmation';
 const Navbar = () => {
     const location = useLocation();
     const { currentUser } = useContext(AuthContext);
+    console.log(currentUser);
 
     useEffect(() => {
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');

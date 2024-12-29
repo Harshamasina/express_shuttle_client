@@ -125,7 +125,7 @@ const TicketBookingForm = () => {
             <div className="booking-form">
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label style={{fontSize: "20px", color: "#e5be5c", fontWeight: "600"}}>Trip Type</label>
+                        <label style={{fontSize: "20px", color: "#e5be5c", fontWeight: "600"}}>Trip Type*</label>
                         <div className="form-checkbox">
                             <label className="form-label">
                                 <input
@@ -154,7 +154,7 @@ const TicketBookingForm = () => {
                     </div>
 
                     <div className="form-group">
-                        <label style={{ fontSize: "20px", color: "#e5be5c", fontWeight: "600" }}>Select Ride</label>
+                        <label style={{ fontSize: "20px", color: "#e5be5c", fontWeight: "600" }}>Select Ride*</label>
                         <div className="form-checkbox">
                             {["RLA - STL", "STL - RLA", "RLA - CLB", "CLB - RLA"].map((ride) => (
                                 <label key={ride} className="form-label">

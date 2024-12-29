@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-// import { FaGoogle } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from "../Config/Firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, fetchSignInMethodsForEmail } from "firebase/auth";
+import axios from "axios";
 
 const Login = () => {
     const [userLogin, setUserLogin] = useState({
@@ -11,8 +12,9 @@ const Login = () => {
         password: "",
     });
 
-    const [ errorMsg, setErrorMsg ] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleInputs = (e) => {
@@ -56,17 +58,58 @@ const Login = () => {
         }
     };
 
+    const signInGoogle = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_uids`);
+            const validUids = response.data;
+            console.log("Valid UIDs from backend:", validUids);
+    
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            console.log("Google Sign-In User UID:", user.uid);
+    
+            if (validUids.includes(user.uid)) {
+                setSuccessMsg("Google Sign-In successful! Redirecting...");
+                navigate("/home");
+            } else {
+                setErrorMsg("Register your account first.");
+                setTimeout(() => navigate("/register"), 2000);
+            }
+        } catch (error) {
+            if (error.response) {
+                console.error("Backend Error:", error.response.data);
+                setErrorMsg("Failed to verify user with backend. Please try again.");
+            } else if (error.request) {
+                console.error("Network Error:", error.request);
+                setErrorMsg("Network error. Please check your connection and try again.");
+            } else {
+                console.error("Error:", error.message);
+                setErrorMsg("Google Sign-In failed. Please try again.");
+            }
+        }
+    };
+
     return (
         <div className="login_container">
             <div className="form_container">
                 <h3>Log In</h3>
                 <form onSubmit={handleSubmit} className="user_form">
-                    <label>email</label>
+                    <label>Email</label>
                     <input type="text" placeholder="Enter your email" name='email' value={userLogin.email} onChange={handleInputs} required />
 
                     <label>Password</label>
-                    <input type="password" placeholder="Enter your Password" name='password' value={userLogin.password} onChange={handleInputs} required />
+                    <input type={showPassword ? "text" : "password"} placeholder="Enter your Password" name='password' value={userLogin.password} onChange={handleInputs} required />
 
+                    <div className="show_password">
+                        <input
+                            type="checkbox"
+                            checked={showPassword}
+                            id="showPass"
+                            onChange={() => setShowPassword(!showPassword)}
+                        />
+                        <label htmlFor="showPass">Show Password</label>
+                    </div>
                     {errorMsg && <p className="text-danger mt-3">{errorMsg}</p>}
                     {successMsg && <p className="text-success mt-3">{successMsg}</p>}
 
@@ -77,12 +120,12 @@ const Login = () => {
                     </p>
                 </form>
 
-                {/* <button className="google-btn">Sign in with Google <FaGoogle /></button> */}
+                <button className="google-btn" onClick={signInGoogle}>Sign in with Google <FaGoogle /></button>
             </div>
 
             <div className="image-container_1"></div>
         </div>
-    )
+    );
 };
 
 export default Login;
