@@ -21,6 +21,7 @@ const TicketBookingForm = () => {
         base_amount: "",
         total_amount: ""
     });
+    
     const [rideOptions, setRideOptions] = useState({
         pick_up: [],
         pick_up_times: [],
