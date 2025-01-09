@@ -76,7 +76,7 @@ const BookingCheckout = () => {
                             )}
                             <p><strong>Traveler Count:</strong> {formData && formData.traveler_count}</p>
                             <p><strong>Notes:</strong> {formData && formData.notes}</p>
-                            <p><strong>Ride Cost:</strong> ${baseAmount}</p>
+                            <p><strong>Ride Cost (w/o Taxes):</strong> ${baseAmount}</p>
                         </div>
                         <h3>Total Amount (inc. Taxes): ${totalAmount}</h3>
                     </div>
