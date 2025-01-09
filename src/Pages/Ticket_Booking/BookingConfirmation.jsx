@@ -6,7 +6,12 @@ const BookingConfirmation = () => {
     const { finalRide } = state || {};
 
     if (!finalRide) {
-        return <h1>No booking details available. Please try again.</h1>;
+        return <>
+            <div className="error_text">
+                <h5>No booking details available. Please try again.</h5>
+                <Link className="error_text_link" to="/ticket_booking">Go To Ticket Booking</Link>
+            </div>
+        </>;
     }
 
     console.log(finalRide.data);
@@ -35,7 +40,13 @@ const BookingConfirmation = () => {
                         <strong>Ticket ID:</strong> {finalRide && finalRide.data.ticket_id}
                     </p>
                     <p>
-                        <strong>Payment Ref ID:</strong> {finalRide && finalRide.data.payment_ref_id}
+                        <strong>Payment Ref ID:</strong> {finalRide && finalRide.data.payment_result.payment_id}
+                    </p>
+                    <p>
+                        <strong>Payment Status:</strong> {finalRide && finalRide.data.payment_result.payment_status}
+                    </p>
+                    <p>
+                        <strong>Payment Email:</strong> {finalRide && finalRide.data.payment_result.payment_email}
                     </p>
                     <p>
                         <strong>Total Amount:</strong> ${finalRide && finalRide.data.total_amount}

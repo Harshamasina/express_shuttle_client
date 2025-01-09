@@ -19,7 +19,7 @@ import BookingConfirmation from '../Pages/Ticket_Booking/BookingConfirmation';
 const Navbar = () => {
     const location = useLocation();
     const { currentUser } = useContext(AuthContext);
-    console.log(currentUser);
+    // console.log(currentUser);
 
     useEffect(() => {
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -123,7 +123,7 @@ const Navbar = () => {
                     <Route path='/about_us' element={<About />} />
                     <Route path='/schedule' element={<Schedule />} />
                     <Route path="/ticket_booking" element={<ProtectedRoute><TicketBooking /></ProtectedRoute>} />
-                    <Route path='checkout' element={<ProtectedRoute><BookingCheckout /></ProtectedRoute>}/>
+                    <Route path='/checkout' element={<ProtectedRoute><BookingCheckout /></ProtectedRoute>}/>
                     <Route path="/my_account" element={<ProtectedRoute><MyAccount /></ProtectedRoute>} />
                     <Route path='/confirmation' element={<ProtectedRoute><BookingConfirmation /></ProtectedRoute>} />
                     <Route path='/login' element={<Login />} />

@@ -1864,6 +1864,42 @@ form{
     }
 }
 
+.error_text{
+    height: 50vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(35%, 50%);
+}
+
+.error_text h5{
+    font-size: 30px;
+    color: #e5be5c;
+    font-weight: 600;
+}
+
+.error_text_link {
+    margin: 7%;
+    padding: 10px 20px;
+    background: transparent;
+    text-decoration: none;
+    color: #e5be5c;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: 600;
+    border-radius: 50px;
+    text-transform: uppercase;
+    border: 3px solid #e5be5c;
+    transition: .3s ease-in-out;
+}
+  
+.error_text_link:hover {
+    background-color: #e5be5c;
+    border: 3px solid #e5be5c;
+    transform: scale(1.05);
+    color: #f4f4f4;
+}
+
 @media screen and (max-width: 600px){
     .navbar{
         justify-content: space-between;
