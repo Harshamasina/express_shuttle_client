@@ -6,10 +6,10 @@ const TicketBookingForm = () => {
     const [formData, setFormData] = useState({
         trip_type: "oneway",
         from_location: "",
+        to_location: "",
         pick_up: "",
         pick_up_date: "",
         pick_up_time: "",
-        to_location: "",
         drop_off: "",
         return_pick_up: "",
         return_pick_up_date: "",
@@ -21,87 +21,80 @@ const TicketBookingForm = () => {
         base_amount: "",
         total_amount: ""
     });
-    
+
     const [rideOptions, setRideOptions] = useState({
         pick_up: [],
         pick_up_times: [],
         drop_off: [],
         return_pick_up: [],
-        return_pick_time: [],
+        return_pick_up_times: [],
         return_drop_off: []
     });
+    const [rideCost, setRideCost] = useState(0);
+
     const navigate = useNavigate();
 
-    const fetchRideSchedule = async (ride) => {
+    const fetchRideSchedule = async (to_location, from_location, trip_type) => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_schedule/${ride}`);
+            const response = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/route_details`, {
+                params: { to_location, from_location, trip_type }
+            });
+
             const scheduleData = response.data;
+            console.log("Fetched Ride Schedule:", scheduleData);
 
             setRideOptions({
                 pick_up: scheduleData.pick_up || [],
                 pick_up_times: scheduleData.pick_up_times || [],
                 drop_off: scheduleData.drop_off || [],
                 return_pick_up: scheduleData.return_pick_up || [],
-                return_pick_time: scheduleData.return_pick_time || [],
-                return_drop_off: scheduleData.return_drop_off || [],
-                ride_cost: scheduleData.ride_cost || 0,
-                return_cost: scheduleData.return_cost || 0
+                return_pick_up_times: scheduleData.return_pick_up_times || [],
+                return_drop_off: scheduleData.return_drop_off || []
             });
 
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                from_location: scheduleData.from_location,
-                to_location: scheduleData.to_location
+                from_location,
+                to_location
             }));
+            fetchRideCost(to_location, from_location, trip_type);
         } catch (error) {
-            console.error("Failed to fetch ride schedule", error);
+            console.error("Failed to fetch ride schedule:", error);
+        }
+    };
+
+    const fetchRideCost = async (to_location, from_location, trip_type) => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_costs`, {
+                params: { to_location, from_location, trip_type }
+            });
+
+            const cost = response.data.cost || 0;
+            console.log("Fetched Ride Cost:", cost);
+            setRideCost(cost);
+        } catch (error) {
+            console.error("Failed to fetch ride cost:", error);
+            setRideCost(0);
         }
     };
 
     useEffect(() => {
-        const calculatePayment = () => {
-            const { ride_cost = 0, return_cost = 0 } = rideOptions;
-            const travelers = parseInt(formData.traveler_count) || 0;
-    
-            if (travelers > 0) {
-                let totalPayment;
+        const travelers = parseInt(formData.traveler_count) || 0;
+        const totalCost = travelers > 0 ? rideCost * travelers : 0;
 
-                if(formData.trip_type === "oneway") {
-                    totalPayment = ride_cost * travelers;
-                }else if(formData.trip_type === "return") {
-                    totalPayment = return_cost * travelers;
-                } else {
-                    totalPayment = 0
-                }
-    
-                setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    base_amount: totalPayment
-                }));
-            } else {
-                setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    base_amount: 0
-                }));
-            }
-        };
-        calculatePayment();
-    }, [formData.traveler_count, formData.trip_type, rideOptions]);
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            base_amount: totalCost
+        }));
+    }, [formData.traveler_count, rideCost]);
 
     const handleRideSelection = async (ride) => {
-        await fetchRideSchedule(ride);
+        const [from_location, to_location] = ride.split(" - ");
+        await fetchRideSchedule(to_location, from_location, formData.trip_type);
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-    
-        if (name === "traveler_count") {
-            if (value <= 0) {
-                alert("Number of travelers must be greater than 0.");
-                setFormData({ ...formData, traveler_count: "" });
-                return;
-            }
-        }
         setFormData({ ...formData, [name]: value });
     };
 
@@ -114,11 +107,18 @@ const TicketBookingForm = () => {
             return_pick_up_time: '',
             return_drop_off: ''
         });
+
+        if (formData.to_location && formData.from_location) {
+            fetchRideSchedule(formData.to_location, formData.from_location, type);
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate("/checkout", { state: {formData} });
+        if(formData.traveler_count <= 0){
+            return alert("Travellers Count Should be 1 or more than 1");
+        }
+        navigate("/checkout", { state: { formData } });
     };
 
     return (
@@ -126,14 +126,13 @@ const TicketBookingForm = () => {
             <div className="booking-form">
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label style={{fontSize: "20px", color: "#e5be5c", fontWeight: "600"}}>Trip Type*</label>
+                        <label style={{ fontSize: "20px", color: "#e5be5c", fontWeight: "600" }}>Trip Type*</label>
                         <div className="form-checkbox">
                             <label className="form-label">
                                 <input
                                     type="radio"
                                     name="trip_type"
                                     value="oneway"
-                                    className="form-control"
                                     checked={formData.trip_type === 'oneway'}
                                     onChange={() => handleTripTypeChange('oneway')}
                                 />
@@ -145,7 +144,6 @@ const TicketBookingForm = () => {
                                     type="radio"
                                     name="trip_type"
                                     value="return"
-                                    className="form-control"
                                     checked={formData.trip_type === 'return'}
                                     onChange={() => handleTripTypeChange('return')}
                                 />
@@ -163,12 +161,8 @@ const TicketBookingForm = () => {
                                         type="radio"
                                         name="to_location"
                                         value={ride}
-                                        className="form-control"
                                         checked={formData.to_location === ride}
-                                        onChange={(e) => {
-                                            setFormData({ ...formData, to_location: e.target.value });
-                                            handleRideSelection(e.target.value);
-                                        }}
+                                        onChange={(e) => handleRideSelection(e.target.value)}
                                     />
                                     <span></span>{ride}
                                 </label>
@@ -183,7 +177,7 @@ const TicketBookingForm = () => {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="pick_up" className="form-label">Pick-Up Location</label>
+                                <label className="form-label">Pick-Up Location</label>
                                 <select name="pick_up" value={formData.pick_up} className="form-control" onChange={handleChange} required>
                                     <option disabled value="">Select Pick-Up Location</option>
                                     {rideOptions.pick_up.map((location) => (
@@ -195,7 +189,7 @@ const TicketBookingForm = () => {
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="drop_off" className="form-label">Drop-Off Location</label>
+                                <label className="form-label">Drop-Off Location</label>
                                 <select name="drop_off" value={formData.drop_off} className="form-control" onChange={handleChange} required>
                                     <option disabled value="">Select Drop-Off Location</option>
                                     {rideOptions.drop_off.map((location) => (
@@ -223,7 +217,7 @@ const TicketBookingForm = () => {
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="pick_up_time" className="form-label">Pick-Up Time</label>
+                                <label className="form-label">Pick-Up Time</label>
                                 <select name="pick_up_time" value={formData.pick_up_time} className="form-control" onChange={handleChange} required>
                                     <option disabled value="">Select Pick-Up Time</option>
                                     {rideOptions.pick_up_times.map((time) => (
@@ -239,7 +233,7 @@ const TicketBookingForm = () => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <label htmlFor="return_pick_up" className="form-label">Return Pick-Up Location</label>
+                                        <label className="form-label">Return Pick-Up Location</label>
                                         <select name="return_pick_up" value={formData.return_pick_up} onChange={handleChange} className="form-control">
                                             <option disabled value="">Select Return Pick-Up</option>
                                             {rideOptions.return_pick_up.map((location) => (
@@ -266,10 +260,10 @@ const TicketBookingForm = () => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <label htmlFor="return_pick_up_time" className="form-label">Return Pick-Up Time</label>
+                                        <label className="form-label">Return Pick-Up Time</label>
                                         <select name="return_pick_up_time" value={formData.return_pick_up_time} className="form-control" onChange={handleChange}>
                                             <option disabled value="">Select Return Pick-Up Time</option>
-                                            {rideOptions.return_pick_time.map((time) => (
+                                            {rideOptions.return_pick_up_times.map((time) => (
                                                 <option key={time} value={time}>{time}</option>
                                             ))}
                                         </select>
@@ -278,9 +272,9 @@ const TicketBookingForm = () => {
 
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <label htmlFor="return_drop_off" className="form-label">Return Drop-Off Location</label>
+                                        <label className="form-label">Return Drop off</label>
                                         <select name="return_drop_off" value={formData.return_drop_off} className="form-control" onChange={handleChange}>
-                                            <option disabled value="">Select Return Drop-Off</option>
+                                            <option disabled value="">Select Return Drop Off</option>
                                             {rideOptions.return_drop_off.map((location) => (
                                                 <option key={location} value={location}>{location}</option>
                                             ))}
@@ -350,7 +344,7 @@ const TicketBookingForm = () => {
                 </form>
             </div>
         </section>
-    )
+    );
 };
 
 export default TicketBookingForm;
