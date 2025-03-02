@@ -1375,6 +1375,7 @@ form{
 	font-size: 18px;
 	-webkit-box-shadow: none;
 	box-shadow: none;
+    cursor: pointer;
 	border-radius: 4px;
 	-webkit-transition: 0.2s all;
 	transition: 0.2s all;
@@ -1424,6 +1425,18 @@ form{
 	display: block;
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
+}
+
+.booking-form .radio-label {
+	position: absolute;
+	top: 5px;
+	left: 20px;
+	font-weight: 600;
+	text-transform: uppercase;
+	line-height: 24px;
+    cursor: pointer;
+	height: 24px;
+	font-size: 20px;
 }
 
 .booking-form .form-label {

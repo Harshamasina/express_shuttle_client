@@ -41,7 +41,7 @@ const TicketBookingForm = () => {
             });
 
             const scheduleData = response.data;
-            console.log("Fetched Ride Schedule:", scheduleData);
+            // console.log("Fetched Ride Schedule:", scheduleData);
 
             setRideOptions({
                 pick_up: scheduleData.pick_up || [],
@@ -70,7 +70,7 @@ const TicketBookingForm = () => {
             });
 
             const cost = response.data.cost || 0;
-            console.log("Fetched Ride Cost:", cost);
+            // console.log("Fetched Ride Cost:", cost);
             setRideCost(cost);
         } catch (error) {
             console.error("Failed to fetch ride cost:", error);
@@ -128,7 +128,7 @@ const TicketBookingForm = () => {
                     <div className="form-group">
                         <label style={{ fontSize: "20px", color: "#e5be5c", fontWeight: "600" }}>Trip Type*</label>
                         <div className="form-checkbox">
-                            <label className="form-label">
+                            <label className="radio-label">
                                 <input
                                     type="radio"
                                     name="trip_type"
@@ -139,7 +139,7 @@ const TicketBookingForm = () => {
                                 <span></span>One Way
                             </label>
                             
-                            <label className="form-label">
+                            <label className="radio-label">
                                 <input
                                     type="radio"
                                     name="trip_type"
@@ -156,7 +156,7 @@ const TicketBookingForm = () => {
                         <label style={{ fontSize: "20px", color: "#e5be5c", fontWeight: "600" }}>Select Ride*</label>
                         <div className="form-checkbox">
                             {["RLA - STL", "STL - RLA", "RLA - CLB", "CLB - RLA"].map((ride) => (
-                                <label key={ride} className="form-label">
+                                <label key={ride} className="radio-label">
                                     <input
                                         type="radio"
                                         name="to_location"
@@ -177,7 +177,7 @@ const TicketBookingForm = () => {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-label">Pick-Up Location</label>
+                                <label className="form-label">Pick-Up Location*</label>
                                 <select name="pick_up" value={formData.pick_up} className="form-control" onChange={handleChange} required>
                                     <option disabled value="">Select Pick-Up Location</option>
                                     {rideOptions.pick_up.map((location) => (
@@ -189,7 +189,7 @@ const TicketBookingForm = () => {
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-label">Drop-Off Location</label>
+                                <label className="form-label">Drop-Off Location*</label>
                                 <select name="drop_off" value={formData.drop_off} className="form-control" onChange={handleChange} required>
                                     <option disabled value="">Select Drop-Off Location</option>
                                     {rideOptions.drop_off.map((location) => (
@@ -211,13 +211,13 @@ const TicketBookingForm = () => {
                                     onChange={handleChange}
                                     required
                                 />
-                                <label htmlFor="pick_up_date" className="form-label">Pick-Up Date</label>
+                                <label htmlFor="pick_up_date" className="form-label">Pick-Up Date*</label>
                             </div>
                         </div>
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-label">Pick-Up Time</label>
+                                <label className="form-label">Pick-Up Time*</label>
                                 <select name="pick_up_time" value={formData.pick_up_time} className="form-control" onChange={handleChange} required>
                                     <option disabled value="">Select Pick-Up Time</option>
                                     {rideOptions.pick_up_times.map((time) => (
@@ -233,7 +233,7 @@ const TicketBookingForm = () => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <label className="form-label">Return Pick-Up Location</label>
+                                        <label className="form-label">Return Pick-Up Location*</label>
                                         <select name="return_pick_up" value={formData.return_pick_up} onChange={handleChange} className="form-control">
                                             <option disabled value="">Select Return Pick-Up</option>
                                             {rideOptions.return_pick_up.map((location) => (
@@ -245,7 +245,7 @@ const TicketBookingForm = () => {
 
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <label htmlFor="return_pick_up_date" className="form-label">Return Pick-Up Date</label>
+                                        <label htmlFor="return_pick_up_date" className="form-label">Return Pick-Up Date*</label>
                                         <input
                                             type="date"
                                             name="return_pick_up_date"
@@ -260,7 +260,7 @@ const TicketBookingForm = () => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <label className="form-label">Return Pick-Up Time</label>
+                                        <label className="form-label">Return Pick-Up Time*</label>
                                         <select name="return_pick_up_time" value={formData.return_pick_up_time} className="form-control" onChange={handleChange}>
                                             <option disabled value="">Select Return Pick-Up Time</option>
                                             {rideOptions.return_pick_up_times.map((time) => (
@@ -272,7 +272,7 @@ const TicketBookingForm = () => {
 
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <label className="form-label">Return Drop off</label>
+                                        <label className="form-label">Return Drop off*</label>
                                         <select name="return_drop_off" value={formData.return_drop_off} className="form-control" onChange={handleChange}>
                                             <option disabled value="">Select Return Drop Off</option>
                                             {rideOptions.return_drop_off.map((location) => (
@@ -310,9 +310,10 @@ const TicketBookingForm = () => {
                                 </select>
                             </div>
                         </div>
+
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="traveler_count" className="form-label">Number of Travelers</label>
+                                <label htmlFor="traveler_count" className="form-label">Number of Travelers*</label>
                                 <input
                                     type="number"
                                     name="traveler_count"
