@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from '../assets/express_shuttle_nav.png';
 import { FaGripfire } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import GoToTop from './GoToTopAnimation';
+import { AuthContext } from "../Context/AuthContext";
+
 
 const Footer = () => {
+    const { currentUser } = useContext(AuthContext);
+    const isVerified = currentUser?.emailVerified === true;
+
     return (
         <>
             <footer className="footer-section">
@@ -70,7 +75,7 @@ const Footer = () => {
                                         <li><Link to="/home" aria-label='click to go to home'>Home</Link></li>
                                         <li><Link to="/about_us" aria-label='click to go to about us'>About us</Link></li>
                                         <li><Link to="/schedule" aria-label='click to go to why us'>Schedule</Link></li>
-                                        <li><Link to="/ticket_booking" aria-label='click to go to services'>Ticket Booking</Link></li>
+                                        {isVerified && <li><Link to="/ticket_booking" aria-label='click to go to services'>Ticket Booking</Link></li>}
                                         <li><Link to="/contact" aria-label='click to go to why us'>Contact</Link></li>
                                     </ul>
                                 </div>

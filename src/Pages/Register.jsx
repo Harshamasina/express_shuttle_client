@@ -91,7 +91,7 @@ const Register = () => {
                         address: "",
                         user_type: "",
                     });
-                    setTimeout(() => navigate("/login"), 2000);
+                    setTimeout(() => navigate("/"), 2000);
                 }
             }, 3000);
         } catch (error) {

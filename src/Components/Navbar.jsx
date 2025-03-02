@@ -19,7 +19,7 @@ import BookingConfirmation from '../Pages/Ticket_Booking/BookingConfirmation';
 const Navbar = () => {
     const location = useLocation();
     const { currentUser } = useContext(AuthContext);
-    // console.log(currentUser);
+    const isVerified = currentUser?.emailVerified === true;
 
     useEffect(() => {
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -71,7 +71,7 @@ const Navbar = () => {
                                     <Link className="nav-link mx-lg-2" aria-current="why us" aria-label='Read more about why to estimate' to="/schedule">Schedule</Link>
                                 </li>
 
-                                {currentUser && (
+                                {isVerified && (
                                     <li className="nav-item">
                                         <Link className="nav-link mx-lg-2" aria-current="ticket booking" aria-label='Book tickets' to="/ticket_booking">Ticket Booking</Link>
                                     </li>
@@ -84,7 +84,7 @@ const Navbar = () => {
 
                             {/* Add My Account / Login links inside the sidebar for mobile */}
                             <div className="d-lg-none mt-3">
-                                {currentUser ? (
+                                {isVerified ? (
                                     <Link to="/my_account" className="navbar_button">
                                         My Account
                                     </Link>
@@ -99,7 +99,7 @@ const Navbar = () => {
 
                     {/* Add My Account / Login links in the navbar for desktop */}
                     <div className="d-none d-lg-block">
-                        {currentUser ? (
+                        {isVerified ? (
                             <Link to="/my_account" className="navbar_button">
                                 My Account
                             </Link>

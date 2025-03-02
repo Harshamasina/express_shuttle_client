@@ -20,7 +20,7 @@ const ProtectedRoute = ({children}) => {
             />;
     }
 
-    if (!currentUser) {
+    if (!currentUser || currentUser.emailVerified !== true) {
         return <Navigate to="/login" replace />;
     }
 
