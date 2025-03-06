@@ -1950,6 +1950,47 @@ form{
     background: #e5be5c;
 }
 
+/* Session Time Out Modal */
+.modal {
+    border: none !important;
+}   
+
+.modal-content{
+    background: #e2e8f0 !important;
+}
+
+.modal_title{
+    text-align: center !important;
+    color: #e5be5c !important;
+    display: flex !important;
+    margin:  0 auto !important;
+    font-size: 30px !important;
+}
+
+.modal_info{
+    margin:  0 auto !important;
+}
+
+.modal_info p{
+    display: flex !important;
+    color: #1A1A19;
+    font-size: 20px;
+}
+
+.modal_button{
+    display: flex !important;
+    margin:  0 auto !important;
+    background: transparent !important;
+    border: 2px solid #e5be5c !important;
+    font-size: 20px !important;
+    color: #e5be5c !important;
+}
+
+.modal_button:hover{
+    background: #e5be5c !important;
+    color: #f4f4f4 !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .error404_link a {

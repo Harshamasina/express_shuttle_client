@@ -33,6 +33,7 @@ const Login = () => {
             if (user.emailVerified) {
                 setSuccessMsg("Login successful! Redirecting...");
                 navigate("/home");
+                window.location.reload();
             } else {
                 setErrorMsg("Please verify your email before logging in.");
             }
@@ -72,6 +73,7 @@ const Login = () => {
             if (validUids.includes(user.uid)) {
                 setSuccessMsg("Google Sign-In successful! Redirecting...");
                 navigate("/home");
+                window.location.reload();
             } else {
                 setErrorMsg("Register your account first.");
                 setTimeout(() => navigate("/register"), 2000);
