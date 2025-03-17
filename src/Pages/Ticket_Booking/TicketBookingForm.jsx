@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const TicketBookingForm = () => {
     const [formData, setFormData] = useState({
@@ -31,6 +32,7 @@ const TicketBookingForm = () => {
         return_drop_off: []
     });
     const [rideCost, setRideCost] = useState(0);
+    const [errorMsg, setErrMsg] = useState("");
 
     const navigate = useNavigate();
 
@@ -116,7 +118,30 @@ const TicketBookingForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(formData.traveler_count <= 0){
-            return alert("Travellers Count Should be 1 or more than 1");
+            setErrMsg("Travellers Count Should be 1 or more than 1");
+            return 
+        }
+
+        const today = moment().startOf('day');
+        const pickUpDate = moment(formData.pick_up_date).startOf('day');
+
+        if(pickUpDate.isBefore(today)){
+            setErrMsg("Pick-Up Date cannot be before today.");
+            return
+        }
+
+        if(formData.trip_type === 'return'){
+            const returnPickUpDate = moment(formData.return_pick_up_date).startOf('day');
+
+            if(returnPickUpDate.isBefore(today)){
+                setErrMsg("Return Pick-Up Date cannot be before today.");
+                return
+            }
+
+            if(returnPickUpDate.isBefore(pickUpDate)){
+                setErrMsg("Return Pick-Up Date cannot be before the Pick-Up Date.");
+                return
+            }
         }
         navigate("/checkout", { state: { formData } });
     };
@@ -338,7 +363,7 @@ const TicketBookingForm = () => {
                             />
                         </div>
                     </div>
-
+                    {errorMsg ? <span className="errMsg">{errorMsg}</span> : ""}
                     <div className="form-btn">
                         <button type="submit" className="submit-btn">Book Shuttle</button>
                     </div>
