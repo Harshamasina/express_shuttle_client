@@ -2000,6 +2000,20 @@ form{
     color: #f4f4f4 !important;
 }
 
+.modal_close_button{
+    display: flex !important;
+    margin:  0 auto !important;
+    background: transparent !important;
+    border: 2px solid #FF0000 !important;
+    font-size: 20px !important;
+    color: #FF0000 !important;
+}
+
+.modal_close_button:hover{
+    background: #FF0000 !important;
+    color: #f4f4f4 !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .error404_link a {

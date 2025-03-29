@@ -19,7 +19,6 @@ const SessionTimeOut = () => {
     
         try {
             let storedLoginTime = localStorage.getItem("loginTime");
-            console.log("Stored Login Time", storedLoginTime)
         
             // If not stored, use currentUser metadata or fallback to now
             if (!storedLoginTime) {
@@ -48,8 +47,8 @@ const SessionTimeOut = () => {
                 // Calculate the remaining time until session expiry
                 const remainingDuration = sessionDuration.subtract(elapsed);
                 const remainingMilliseconds = remainingDuration.asMilliseconds();
-                console.log(remainingDuration);
-                console.log(remainingMilliseconds);
+                // console.log(remainingDuration);
+                // console.log(remainingMilliseconds);
                 timer = setTimeout(() => {
                     setSessionExpired(true);
                 }, remainingMilliseconds);
