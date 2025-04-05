@@ -196,50 +196,50 @@ const TicketBookingForm = () => {
 
             if (formData.trip_type === "return") {
                 seatCountResponse = await axios.get(
-                `${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_seats_count`,
-                {
-                    params: {
-                    trip_type: "return",
-                    from_location: formData.from_location,
-                    to_location: formData.to_location,
-                    pick_up_date: formData.pick_up_date,
-                    pick_up_time: formData.pick_up_time,
-                    return_pick_up_date: formData.return_pick_up_date,
-                    return_pick_up_time: formData.return_pick_up_time
+                    `${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_seats_count`,
+                    {
+                        params: {
+                        trip_type: "return",
+                        from_location: formData.from_location,
+                        to_location: formData.to_location,
+                        pick_up_date: formData.pick_up_date,
+                        pick_up_time: formData.pick_up_time,
+                        return_pick_up_date: formData.return_pick_up_date,
+                        return_pick_up_time: formData.return_pick_up_time
+                        }
                     }
-                }
-            );
-        } else {
-            seatCountResponse = await axios.get(
-            `${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_seats_count`,
-            {
-                params: {
-                trip_type: "oneway",
-                from_location: formData.from_location,
-                to_location: formData.to_location,
-                pick_up_date: formData.pick_up_date,
-                pick_up_time: formData.pick_up_time
-                }
-            }
-            );
-        }
-
-        const seatData = seatCountResponse.data;
-        setSeatCount(seatData);
-
-        const requestedTravelers = parseInt(formData.traveler_count, 10) || 0;
-
-        if (formData.trip_type === "oneway") {
-            const availableSeats = seatData.seats_remaining || 0;
-
-            if (requestedTravelers > availableSeats) {
-                openModal(
-                    "Not Enough Seats",
-                    `You requested ${requestedTravelers} seat(s), but only ${availableSeats} are available for your one-way trip. Please choose different Date/Time`,
-                    true
                 );
-                return;
+            } else {
+                seatCountResponse = await axios.get(
+                    `${import.meta.env.VITE_LOCAL_API_URL}/api/fetch_seats_count`,
+                    {
+                        params: {
+                        trip_type: "oneway",
+                        from_location: formData.from_location,
+                        to_location: formData.to_location,
+                        pick_up_date: formData.pick_up_date,
+                        pick_up_time: formData.pick_up_time
+                        }
+                    }
+                );
             }
+
+            const seatData = seatCountResponse.data;
+            setSeatCount(seatData);
+
+            const requestedTravelers = parseInt(formData.traveler_count, 10) || 0;
+
+            if (formData.trip_type === "oneway") {
+                const availableSeats = seatData.seats_remaining || 0;
+
+                if (requestedTravelers > availableSeats) {
+                    openModal(
+                        "Not Enough Seats",
+                        `You requested ${requestedTravelers} seat(s), but only ${availableSeats} are available for your one-way trip. Please choose different Date/Time`,
+                        true
+                    );
+                    return;
+                }
             } else {
                 const outboundSeats = seatData.outbound_seats_remaining || 0;
                 const returnSeats = seatData.return_seats_remaining || 0;
@@ -254,17 +254,17 @@ const TicketBookingForm = () => {
                     );
                     return;
                 }
-        }
+            }
 
-        let seatMsg = "";
-        if (formData.trip_type === "oneway") {
-            seatMsg = `Seats Remaining: ${seatData.seats_remaining || 0}`;
-        } else {
-            seatMsg = `Outbound Seats Remaining: ${seatData.outbound_seats_remaining || 0}\n` +
-                    `Return Seats Remaining: ${seatData.return_seats_remaining || 0}`;
-        }
+            let seatMsg = "";
+            if (formData.trip_type === "oneway") {
+                seatMsg = `Seats Remaining: ${seatData.seats_remaining || 0}`;
+            } else {
+                seatMsg = `Outbound Seats Remaining: ${seatData.outbound_seats_remaining || 0}\n` +
+                        `Return Seats Remaining: ${seatData.return_seats_remaining || 0}`;
+            }
 
-        openModal("Seat Availability", seatMsg, false);
+            openModal("Seat Availability", seatMsg, false);
         } catch (err) {
             console.error("Error fetching seat count:", err);
             const msg = err.response?.data?.message || "Error fetching seat count";
